@@ -69,9 +69,6 @@ def _watch_image_link(bot, event, command):
             if 'http' in words[i]:
                 url = words[i]
         title = get_title(url)
-        if not title == 'Unable to open url :(':
-            link = shorten(url)
-            msg = _("** {} ** -- {}").format(title, link)
-        else:
-            msg = _("{}").format(title)
+        link = shorten(url)
+        msg = _("** {} ** -- {}").format(title, link)
         yield from bot.coro_send_message(event.conv, msg)

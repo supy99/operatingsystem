@@ -249,7 +249,6 @@ class HangupsBot(object):
 
             hangups_conv_list = self._conv_list.get_all()
 
-            # XXX: run consistency check on reportedly missing conversations from catalog
             for conv in hangups_conv_list:
                 if conv.id_ not in check_ids:
                     missing.append(conv.id_)

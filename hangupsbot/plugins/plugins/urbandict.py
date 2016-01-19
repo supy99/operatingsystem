@@ -61,7 +61,7 @@ def normalize_newlines(text):
     return text.replace('\r\n', '\n').replace('\r', '\n')
 
 
-def urban(bot, event, *args):
+def urbandict(bot, event, *args):
     """lookup a term on Urban Dictionary.
     supplying no parameters will get you a random term.
     DISCLAIMER: all definitions are from http://www.urbandictionary.com/ - the bot and its
@@ -103,4 +103,4 @@ def urban(bot, event, *args):
 
 
 def _initialise(bot):
-    plugins.register_user_command(["urban"])
+    plugins.register_user_command(["urbandict"])
