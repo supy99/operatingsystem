@@ -17,7 +17,7 @@ def yoda(bot, event, *args):
 def convert(input):
     sentence = quote_plus(input)
     q = Request('https://yoda.p.mashape.com/yoda?sentence=' + sentence)
-    q.add_header('X-Mashape-Key', '<redacted>')
+    q.add_header('X-Mashape-Key', API-KEY)
     q.add_header('Accept', 'text/plain')
     a = urlopen(q).read()
     b = list(a)
