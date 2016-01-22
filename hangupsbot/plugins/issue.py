@@ -2,6 +2,7 @@ import json
 import requests
 import plugins
 from ghinfo import *
+from links import *
 
 def _initialise():
     plugins.register_admin_command(['issue'])
@@ -19,8 +20,11 @@ def issue(bot, event, *args):
                  'body': 'Issue created by {}'.format(event.user.full_name)}
         # Add the issue to our repository
         r = session.post(url, json.dumps(issue))
+        get = requests.get(url)
+        data = json.loads(get.text)
+        link = shorten(str(data[0][u'html_url']))
         if r.status_code == 201:
-            msg = _('Successfully created issue')
+            msg = _('Successfully created issue: {}').format(link)
         else:
             msg = _('Could not create issue.<br>Response: {}').format(r.content)
     else:
