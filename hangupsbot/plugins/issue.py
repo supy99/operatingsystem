@@ -29,7 +29,7 @@ def issue(bot, event, *args):
         else:
             num = int(args[0]) * -1
             link = shorten(str(data[num][u'html_url']))
-            title = get('https://api.github.com/repos/{}/{}/issues/%d' % (REPO_OWNER, REPO_NAME, num)).json()
+            title = get('https://api.github.com/repos/{}/{}/issues/{}' % (REPO_OWNER, REPO_NAME, num)).json()
             if 'message' in title:
                 msg = ("Invalid Issue Number")
             else:
