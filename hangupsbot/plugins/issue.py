@@ -8,11 +8,12 @@ def _initialise():
 
 def issue(bot, event, *args):
     '''Create an issue on github.com using the given parameters.'''
-   if args: 
+    if args: 
         # Our url to create issues via POST
         url = 'https://api.github.com/repos/{}/{}/issues'.format(REPO_OWNER, REPO_NAME)
         # Create an authenticated session to create the issue
-        session = requests.session(auth=(USERNAME, PASSWORD))
+        session = requests.Session()
+        session.auth=(USERNAME, PASSWORD)
         # Create our issue
         issue = {'title': ' '.join(args),
                  'body': 'Issue created by {}'.format(event.user.full_name)}
