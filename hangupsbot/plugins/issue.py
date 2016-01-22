@@ -29,7 +29,11 @@ def issue(bot, event, *args):
         else:
             num = int(args[0]) * -1
             link = shorten(str(data[num][u'html_url']))
-            msg = _('{}').format(link)
+            title = get('https://api.github.com/repos/{}/{}/issues/%d' % (REPO_OWNER, REPO_NAME, num)).json()
+            if 'message' in title:
+                msg = ("Invalid Issue Number")
+            else:
+                msg = _('{} -- {}').format(title['title'], link)
     else:
         msg = _('No issue given.')
     yield from bot.coro_send_message(event.conv, msg)
