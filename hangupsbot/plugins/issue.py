@@ -27,10 +27,13 @@ def issue(bot, event, *args):
             else:
                 msg = _('Could not create issue.<br>Response: {}').format(r.content)
         else:
-            num = int(args[0]) * -1
-            link = shorten(str(data[num][u'html_url']))
-            title = str(data[num][u'title'])
-            msg = _('{} -- {}').format(title, link)
+            try:
+                num = int(args[0]) * -1
+                link = shorten(str(data[num][u'html_url']))
+                title = str(data[num][u'title'])
+                msg = _('{} -- {}').format(title, link)
+            except:
+                msg = _('Invalid Issue Number')
     else:
         msg = _('No issue given.')
     yield from bot.coro_send_message(event.conv, msg)
