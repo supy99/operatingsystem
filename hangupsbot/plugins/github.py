@@ -9,6 +9,21 @@ from control import *
 
 def _initialise():
     plugins.register_admin_command(['issue', 'commit'])
+    plugins.register_user_command(['gh' , 'source'])
+
+def getsource():
+    url = 'https://github.com/2019okulkarn/sodabot'
+    short = shorten(url)
+    title = get_title(url)
+    msg = _('** {} ** - {}').format(title, short)
+    return msg
+def gh(bot, event, *args):
+    msg = getsource()
+    yield from bot.coro_send_message(event.conv, msg)
+
+def source(bot, event, *args):
+    msg = getsource()
+    yield from bot.coro_send_message(event.conv, msg)
 
 def getissue(int(num), url):
     get = requests.get(url)
