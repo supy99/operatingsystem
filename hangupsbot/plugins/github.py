@@ -1,3 +1,5 @@
+# code for this partially borrowed from tjcsl/cslbot
+
 import json
 import requests
 import plugins
@@ -8,6 +10,17 @@ from control import *
 def _initialise():
     plugins.register_admin_command(['issue', 'commit'])
 
+def getissue(int(num), url):
+    get = requests.get(url)
+    data = json.loads(get.text)
+    num = num * -1
+    link = shorten(str(data[num][u'html_url']))
+    title = str(data[num][u'title'])
+    number = str(data[num][u'number'])
+    return {"title": title,
+            "link": link,
+            "number": number}
+    
 def commit(bot, event, *args):
     '''Get the latest commit'''
     try:
@@ -31,18 +44,13 @@ def commit(bot, event, *args):
 
 def issue(bot, event, *args):
     '''Create an issue on github.com using the given parameters.'''
+    url = 'https://api.github.com/repos/{}/{}/issues'.format(REPO_OWNER, REPO_NAME)
     try:
         if args:
-            url = 'https://api.github.com/repos/{}/{}/issues'.format(REPO_OWNER, REPO_NAME)
-            
             if str(args[0]).isdigit():
                 try:
-                    get = requests.get(url)
-                    data = json.loads(get.text)
-                    num = int(args[0]) * -1
-                    link = shorten(str(data[num][u'html_url']))
-                    title = str(data[num][u'title'])
-                    msg = _('{} -- {}').format(title, link)
+                    getissue(num, url)
+                    msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
                 except:
                     msg = _('Invalid Issue Number')
             else:
@@ -62,7 +70,8 @@ def issue(bot, event, *args):
                     msg = _('Could not create issue.<br>Response: {}').format(r.content)
 
         else:
-            msg = _('No issue given.')
+            i = getissue(-1, url)
+            msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
         yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
         msg = _('{} -- {}').format(str(e), event.text)
