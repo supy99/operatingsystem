@@ -13,7 +13,15 @@ def issue(bot, event, *args):
         url = 'https://api.github.com/repos/{}/{}/issues'.format(REPO_OWNER, REPO_NAME)
         get = requests.get(url)
         data = json.loads(get.text)
-        if not len(args) == 1 and args[0].isdigit():
+        if str(args[0]).isdigit():
+            try:
+                num = int(args[0]) * -1
+                link = shorten(str(data[num][u'html_url']))
+                title = str(data[num][u'title'])
+                msg = _('{} -- {}').format(title, link)
+            except:
+                msg = _('Invalid Issue Number')
+        else:
             session = requests.Session()
             session.auth=(USERNAME, PASSWORD)
             # Create our issue
@@ -26,14 +34,7 @@ def issue(bot, event, *args):
                 msg = _('Successfully created issue: {}').format(link)
             else:
                 msg = _('Could not create issue.<br>Response: {}').format(r.content)
-        else:
-            try:
-                num = int(args[0]) * -1
-                link = shorten(str(data[num][u'html_url']))
-                title = str(data[num][u'title'])
-                msg = _('{} -- {}').format(title, link)
-            except:
-                msg = _('Invalid Issue Number')
+
     else:
         msg = _('No issue given.')
     yield from bot.coro_send_message(event.conv, msg)
