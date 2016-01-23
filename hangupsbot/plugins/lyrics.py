@@ -8,6 +8,7 @@ def _initialise():
     plugins.register_user_command(["lyrics"])
 
 def lyrics(bot, event, *args):
+    try:
         payload = {'apikey': key, 'q': str(args)}
         r = get('http://api.lyricsnmusic.com/songs', params=payload)
         url = r.json()[0]['url']
