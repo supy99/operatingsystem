@@ -9,7 +9,7 @@ def shorten(url):
         soup = BS(html, 'html.parser')
         return soup.get_text()
     except:
-        error = "Unaable to open url :("
+        error = "Could not create shortened link"
         return error
 
 def get_title(url):
