@@ -1,5 +1,5 @@
 import plugins, re
-
+from control import *
 from urllib.request import urlopen
 
 def _initialise():
@@ -51,7 +51,7 @@ def lyrics(bot, event, *args):
         yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
         msg = _('{} -- {}').format(str(e), event.text)
-        yield from bot.coro_send_message('UgwEsRHkk27NK2sRISx4AaABAQ',msg)
+        yield from bot.coro_send_message(CONTROL,msg)
 
 
     

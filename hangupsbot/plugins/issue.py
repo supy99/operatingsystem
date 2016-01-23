@@ -3,6 +3,7 @@ import requests
 import plugins
 from ghinfo import *
 from links import *
+from control import *
 
 def _initialise():
     plugins.register_admin_command(['issue'])
@@ -42,4 +43,4 @@ def issue(bot, event, *args):
         yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
         msg = _('{} -- {}').format(str(e), event.text)
-        yield from bot.coro_send_message('UgwEsRHkk27NK2sRISx4AaABAQ', msg)
+        yield from bot.coro_send_message(CONTROL, msg)

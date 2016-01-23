@@ -2,6 +2,8 @@ import aiohttp, asyncio, io, logging, os, re
 
 import plugins
 
+from control import *
+
 from links import *
 
 from random import choice as choose
@@ -37,5 +39,5 @@ def xkcd(bot, event, *args):
         yield from bot.coro_send_message(event.conv.id_, None, image_id=image_id)
         yield from bot.coro_send_message(event.conv, _('{}').format(link))
     except BaseException as e:
-        msg = _('{}').format(str(e))
-        yield from bot.coro_send_message('UgwEsRHkk27NK2sRISx4AaABAQ',msg)
+        msg = _('{} -- {}').format(str(e), event.text)
+        yield from bot.coro_send_message(CONTROL,msg)

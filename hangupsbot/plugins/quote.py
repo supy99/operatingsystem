@@ -3,6 +3,7 @@ import asyncio, logging, re
 from random import choice
 import time
 import plugins
+from control import *
 
 logger = logging.getLogger(__name__)
 
@@ -11,21 +12,25 @@ def _initialize():
     plugins.register_user_command(["quote"])
 
 def addquote(bot, event, *args):
-    if args:
-        quote = ' '.join(args).split(' - ')
-        user = quote[1]
-        if not bot.memory.exists([user]):
-            bot.memory.set_by_path([user], {})
-        quotemem = bot.memory.get_by_path([user])
-        quotetoadd = quote[0]
-        quotemem[str(time.time())] = quotetoadd
-        bot.memory.set_by_path([user], quotemem)
+    try:
+        if args:
+            quote = ' '.join(args).split(' - ')
+            user = quote[1]
+            if not bot.memory.exists([user]):
+                bot.memory.set_by_path([user], {})
+            quotemem = bot.memory.get_by_path([user])
+            quotetoadd = quote[0]
+            quotemem[str(time.time())] = quotetoadd
+            bot.memory.set_by_path([user], quotemem)
+            bot.memory.save()
+            msg = _("New quote for {}").format(user)
+        else:
+            msg = _("Please give me a quote to add")
+        yield from bot.coro_send_message(event.conv, msg)
         bot.memory.save()
-        msg = _("New quote for {}").format(user)
-    else:
-        msg = _("Please give me a quote to add")
-    yield from bot.coro_send_message(event.conv, msg)
-    bot.memory.save()
+    except BaseException as e:
+        msg = _('{} -- {}').format(str(e), event.text)
+        yield from bot.coro_send_message(CONTROL, msg)
 
 def quote(bot, event, *args):
     try:
