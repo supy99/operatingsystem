@@ -17,6 +17,7 @@ def getsource():
     title = get_title(url)
     msg = _('** {} ** - {}').format(title, short)
     return msg
+    
 def gh(bot, event, *args):
     msg = getsource()
     yield from bot.coro_send_message(event.conv, msg)
@@ -25,10 +26,10 @@ def source(bot, event, *args):
     msg = getsource()
     yield from bot.coro_send_message(event.conv, msg)
 
-def getissue(int(num), url):
+def getissue(num, url):
     get = requests.get(url)
     data = json.loads(get.text)
-    num = num * -1
+    num = int(num) * -1
     link = shorten(str(data[num][u'html_url']))
     title = str(data[num][u'title'])
     number = str(data[num][u'number'])
@@ -64,7 +65,7 @@ def issue(bot, event, *args):
         if args:
             if str(args[0]).isdigit():
                 try:
-                    getissue(num, url)
+                    i = getissue(num, url)
                     msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
                 except:
                     msg = _('Invalid Issue Number')
