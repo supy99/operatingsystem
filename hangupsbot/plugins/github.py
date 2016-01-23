@@ -86,7 +86,7 @@ def issue(bot, event, *args):
                     msg = _('Could not create issue.<br>Response: {}').format(r.content)
 
         else:
-            i = getissue(-1, url)
+            i = getissue(0, url)
             msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
         yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
