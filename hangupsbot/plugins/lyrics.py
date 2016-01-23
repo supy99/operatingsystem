@@ -20,6 +20,3 @@ def lyrics(bot, event, *args):
         msg = _('{} -- {}').format(str(e), event.text)
         yield from bot.coro_send_message(event.conv, simple)
         yield from bot.coro_send_message(CONTROL,msg)
-
-
-    
