@@ -50,7 +50,9 @@ def lyrics(bot, event, *args):
             msg = _('The correct format for this command is ! lyrics <song name> by <artist>')
         yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
+        simple = _('Lyrics not Found')
         msg = _('{} -- {}').format(str(e), event.text)
+        yield from bot.coro_send_message(event.conv, simple)
         yield from bot.coro_send_message(CONTROL,msg)
 
 
