@@ -65,7 +65,7 @@ def issue(bot, event, *args):
         if args:
             if str(args[0]).isdigit():
                 try:
-                    i = getissue(num, url)
+                    i = getissue(int(args[0]), url)
                     msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
                 except:
                     msg = _('Invalid Issue Number')
