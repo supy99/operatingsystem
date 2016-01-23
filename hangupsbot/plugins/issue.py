@@ -16,6 +16,8 @@ def issue(bot, event, *args):
             
             if str(args[0]).isdigit():
                 try:
+                    get = requests.get(url)
+                    data = json.loads(get.text)
                     num = int(args[0]) * -1
                     link = shorten(str(data[num][u'html_url']))
                     title = str(data[num][u'title'])
