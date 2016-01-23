@@ -21,7 +21,7 @@ def commit(bot, event, *args):
         committer = str(commitdata[u'committer'][u'name'])
         date = str(commitdata[u'committer'][u'date'])
         message = str(commitdata[u'message'])
-        msg = _('The last commit was {} by {} at {}<br>{}').format(message, committer, date, link)
+        msg = _('The last commit was "{}" by {} at {}<br>{}').format(message, committer, date, link)
         yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
         msg = _('{} -- {}').format(e, event.text)
