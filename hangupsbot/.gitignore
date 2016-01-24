@@ -1,2 +1,4 @@
-~/
-image_screenshot/
+apikeys.py
+ghinfo.py
+control.py
+logs/
