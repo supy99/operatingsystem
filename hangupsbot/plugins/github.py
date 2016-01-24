@@ -26,7 +26,7 @@ def source(bot, event, *args):
     msg = getsource()
     yield from bot.coro_send_message(event.conv, msg)
 
-def getissue(num, url):
+def getopenissue(num, url):
     get = requests.get(url)
     data = json.loads(get.text)
     num = int(num) * -1
@@ -36,7 +36,20 @@ def getissue(num, url):
     return {"title": title,
             "link": link,
             "number": number}
-    
+
+def getissue(num):
+    issuesurl = 'https://api.github.com/repos/{}/{}/issues/{}'.format(REPO_OWNER, REPO_NAME, num)
+    get = requests.get(issuesurl)
+    data = json.loads(get.text)
+    link = shorten(str(data[u'html_url']))
+    number = str(data[u'number'])
+    state = str(data[u'state']
+    title = str(data[u'title']
+    return {"title": title,
+            "link": link,
+            "number": number,
+            "state": state}
+
 def commit(bot, event, *args):
     '''Get the latest commit'''
     try:
@@ -66,7 +79,7 @@ def issue(bot, event, *args):
             if str(args[0]).isdigit():
                 try:
                     i = getissue(int(args[0]), url)
-                    msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
+                    msg = _('{} ({}) State: {}<br>{}').format(i["title"], i["number"], i["state"], i["link"])
                 except:
                     msg = _('Invalid Issue Number')
             else:
@@ -86,7 +99,7 @@ def issue(bot, event, *args):
                     msg = _('Could not create issue.<br>Response: {}').format(r.content)
 
         else:
-            i = getissue(0, url)
+            i = getopenissue(0, url)
             msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
         yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
