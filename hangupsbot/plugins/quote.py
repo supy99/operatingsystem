@@ -15,7 +15,7 @@ def addquote(bot, event, *args):
     try:
         if args:
             quote = ' '.join(args).split(' - ')
-            user = quote[1]
+            user = quote[1].lower()
             if not bot.memory.exists([user]):
                 bot.memory.set_by_path([user], {})
             quotemem = bot.memory.get_by_path([user])
@@ -35,7 +35,7 @@ def addquote(bot, event, *args):
 def quote(bot, event, *args):
     try:
         if args:
-            user = ' '.join(args)
+            user = ' '.join(args).lower()
             listofquotes = bot.memory.get_by_path([user])
             if ',' in str(listofquotes):
                 quotelist = str(listofquotes).split(',')
