@@ -15,6 +15,28 @@ logger = logging.getLogger(__name__)
 
 def _initialise():
     plugins.register_user_command(["xkcd"])
+    plugins.register_handler(_thirty_seven, type=message)
+
+@asyncio.coroutine
+def _thirty_seven(bot, event, command):
+    words = str(event.text).split()
+    for i in range(len(words)):
+        if 'ass' == words[i]:
+            correct = True
+            return
+        else:
+            correct = False
+    if correct:
+        link_image = str(pykcd.XKCDStrip(37).image_link)
+        filename = os.path.basename(link_image)
+        r = yield from aiohttp.request('get', link_image)
+        raw = yield from r.read()
+        image_data = io.BytesIO(raw)
+        link = shorten(link_image)
+        image_id = yield from bot._client.upload_image(image_data, filename=filename)
+        yield from bot.coro_send_message(event.conv.id_, None, image_id=image_id)
+        yield from bot.coro_send_message(event.conv, _('{}').format(link))
+
 
 
 def xkcd(bot, event, *args):
