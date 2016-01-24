@@ -43,8 +43,8 @@ def getissue(num):
     data = json.loads(get.text)
     link = shorten(str(data[u'html_url']))
     number = str(data[u'number'])
-    state = str(data[u'state']
-    title = str(data[u'title']
+    state = str(data[u'state'])
+    title = str(data[u'title'])
     return {"title": title,
             "link": link,
             "number": number,
