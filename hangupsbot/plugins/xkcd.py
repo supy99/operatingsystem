@@ -15,18 +15,11 @@ logger = logging.getLogger(__name__)
 
 def _initialise():
     plugins.register_user_command(["xkcd"])
-    plugins.register_handler(_thirty_seven, type=message)
+    plugins.register_handler(_thirty_seven, type="message")
 
 @asyncio.coroutine
 def _thirty_seven(bot, event, command):
-    words = str(event.text).split()
-    for i in range(len(words)):
-        if 'ass' == words[i]:
-            correct = True
-            return
-        else:
-            correct = False
-    if correct:
+    if 'ass' in str(event.text):
         link_image = str(pykcd.XKCDStrip(37).image_link)
         filename = os.path.basename(link_image)
         r = yield from aiohttp.request('get', link_image)
