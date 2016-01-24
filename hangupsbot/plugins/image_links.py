@@ -76,8 +76,8 @@ def _watch_image_link(bot, event, command):
             else:
                 msg = _("{}").format(title)
             yield from bot.coro_send_message(event.conv, msg)
-        except BaseException as e:
-            simple = _('An Error Occurred')
-            msg = _('{} -- {}').format(str(e), event.text)
-            yield from bot.coro_send_message(CONTROL, msg)
-            yield from bot.coro_send_message(event.conv, simple)
+    except BaseException as e:
+        simple = _('An Error Occurred')
+        msg = _('{} -- {}').format(str(e), event.text)
+        yield from bot.coro_send_message(CONTROL, msg)
+        yield from bot.coro_send_message(event.conv, simple)
