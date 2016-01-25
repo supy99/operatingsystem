@@ -12,7 +12,7 @@ def _initialise():
     plugins.register_user_command(["rage"])
 
 def rage(bot, event, *args):
-	'''Rages at something. Format is /bot rage <something>'''
+    '''Rages at something. Format is /bot rage <something>'''
     if args:
         msg = _('<b><i><u>{}!!!').format(' '.join(args).upper())
         yield from bot.coro_send_message(event.conv.id_, msg)
