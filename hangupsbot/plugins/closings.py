@@ -3,27 +3,23 @@ import json
 from requests import get
 from control import *
 from bs4 import BeautifulSoup
-import asyncio
 
 def _initialise():
     plugins.register_user_command(['fcps', 'lcps'])
 
-@asyncio.coroutine
-def checklcps():
-    r = get('http://www.nbcwashington.com/weather/school-closings/')
-    html = r.text
-    soup = BeautifulSoup(html, 'html.parser')
-    schools = []
-    for school in soup.find_all('p'):
-        schools.append(school.text)
-
-    for i in range(len(schools)):
-        if 'Loudoun County' in schools[i]:
-            return (schools[i])
 
 def lcps(bot, event, *args):
     try:
-        check = checklcps()
+        r = get('http://www.nbcwashington.com/weather/school-closings/')
+        html = r.text
+        soup = BeautifulSoup(html, 'html.parser')
+        schools = []
+        for school in soup.find_all('p'):
+            schools.append(school.text)
+
+        for i in range(len(schools)):
+            if 'Loudoun County' in schools[i]:
+                check = str(schools[i])
         status = check.replace('Loudoun County Schools', '')
         msg = _('LCPS is {}').format(status)
         yield from bot.coro_send_message(event.conv, msg)
