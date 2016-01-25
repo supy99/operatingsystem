@@ -7,19 +7,32 @@ from bs4 import BeautifulSoup
 def _initialise():
     plugins.register_user_command(['fcps', 'lcps'])
 
+@asyncio.coroutine
+def checklcps():
+    r = get('http://www.nbcwashington.com/weather/school-closings/')
+    html = r.text
+    soup = BeautifulSoup(html, 'html.parser')
+    schools = []
+    for school in soup.find_all('p'):
+        schools.append(school.text)
+
+    for i in range(len(schools)):
+        if 'Loudoun County' in schools[i]:
+            return (schools[i])
+            yield from asyncio.sleep(1)
+
+
+def main():
+    loop = asyncio.get_event_loop()
+    loop.add_reader(sys.stdin, checklcps())
+    yield from bot.coro_send_message(event.conv, _(str(checklcps())))
+    loop.run_until_complete(checklcps())
+
+main()
 
 def lcps(bot, event, *args):
     try:
-        r = get('http://www.nbcwashington.com/weather/school-closings/')
-        html = r.text
-        soup = BeautifulSoup(html, 'html.parser')
-        schools = []
-        for school in soup.find_all('p'):
-            schools.append(school.text)
-
-        for i in range(len(schools)):
-            if 'Loudoun County' in schools[i]:
-                check = str(schools[i])
+        check = checklcps()
         status = check.replace('Loudoun County Schools', '')
         msg = _('LCPS is {}').format(status)
         yield from bot.coro_send_message(event.conv, msg)
