@@ -3,6 +3,7 @@ import json
 from requests import get
 from control import *
 from bs4 import BeautifulSoup
+import asyncio
 
 def _initialise():
     plugins.register_user_command(['fcps', 'lcps'])
@@ -19,16 +20,6 @@ def checklcps():
     for i in range(len(schools)):
         if 'Loudoun County' in schools[i]:
             return (schools[i])
-            yield from asyncio.sleep(1)
-
-
-def main():
-    loop = asyncio.get_event_loop()
-    loop.add_reader(sys.stdin, checklcps())
-    yield from bot.coro_send_message(event.conv, _(str(checklcps())))
-    loop.run_until_complete(checklcps())
-
-main()
 
 def lcps(bot, event, *args):
     try:
