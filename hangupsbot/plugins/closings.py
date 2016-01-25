@@ -18,6 +18,8 @@ def checklcps():
     for i in range(len(schools)):
         if 'Loudoun County' in schools[i]:
             return schools[i]
+        else:
+            return 'Open'
 
 def lcps(bot, event, *args):
     try:
