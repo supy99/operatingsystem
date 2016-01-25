@@ -2,9 +2,33 @@ import plugins
 import json
 from requests import get
 from control import *
+from bs4 import BeautifulSoup
 
 def _initialise():
-    plugins.register_user_command(['fcps'])
+    plugins.register_user_command(['fcps', 'lcps'])
+
+def checklcps():
+    r = get('http://www.nbcwashington.com/weather/school-closings/')
+    html = r.text
+    soup = BeautifulSoup(html, 'html.parser')
+    schools = []
+    for school in soup.find_all('p'):
+        schools.append(school.text)
+
+    for i in range(len(schools)):
+        if 'Loudoun County' in schools[i]:
+            return schools[i]
+
+def lcps(bot, event, *args):
+    try:
+        check = checklcps()
+        status = check.replace('Loudoun County Schools', '')
+        msg = _('LCPS is {}').format(staus)
+    except BaseException as e:
+        simple = _('An Error Occurred')
+        msg = _('{} -- {}').format(str(e), event.text)
+        yield from bot.coro_send_message(event.conv, simple)
+        yield from bot.coro_send_message(CONTROL, msg)
 
 def fcps(bot, event, *args):
     try:
