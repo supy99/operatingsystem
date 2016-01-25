@@ -8,6 +8,7 @@ def _initialise():
     plugins.register_user_command(["compliment"])
 
 def compliment(bot, event, *args):
+    '''Compliment something. The correct format is /bot compliment <what to compliment>'''
     if args:
         if 'me' in ''.join(args).lower():
             complimenttouse = choose(compliments)

@@ -20,7 +20,7 @@ def score(bot, event, *args):
         team2 = scoreslist[2]
         team2score = scoreslist[3]
         time = scoreslist[4]
-	msg = _('<b>{}:</b> {}<br><b>{}:</b> {}<br>{} - MAY NOT BE ACCURATE DURING GAMES').format(team1, team1score, team2, team2score, time)
+        msg = _('<b>{}:</b> {}<br><b>{}:</b> {}<br>{} - MAY NOT BE ACCURATE DURING GAMES').format(team1, team1score, team2, team2score, time)
         yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
         simple = _('Unable to find scores')
