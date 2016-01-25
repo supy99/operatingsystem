@@ -19,9 +19,10 @@ def lcps(bot, event, *args):
 
         for i in range(len(schools)):
             if 'Loudoun County' in schools[i]:
-                check = schools[i]
+                check = str(schools[i])
         status = check.replace('Loudoun County Schools', '')
         msg = _('LCPS is {}').format(status)
+        yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
         simple = _('An Error Occurred')
         msg = _('{} -- {}').format(str(e), event.text)
