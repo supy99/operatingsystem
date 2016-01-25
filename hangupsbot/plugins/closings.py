@@ -23,7 +23,7 @@ def lcps(bot, event, *args):
     try:
         check = checklcps()
         status = check.replace('Loudoun County Schools', '')
-        msg = _('LCPS is {}').format(staus)
+        msg = _('LCPS is {}').format(status)
     except BaseException as e:
         simple = _('An Error Occurred')
         msg = _('{} -- {}').format(str(e), event.text)
