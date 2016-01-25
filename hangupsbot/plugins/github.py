@@ -1,5 +1,5 @@
 # code for this partially borrowed from tjcsl/cslbot
-
+import git
 import json
 import requests
 import plugins
@@ -8,9 +8,18 @@ from links import *
 from control import *
 
 def _initialise():
-    plugins.register_admin_command(['issue', 'commit'])
+    plugins.register_admin_command(['pull', 'issue', 'commit'])
     plugins.register_user_command(['gh' , 'source'])
 
+def pull(bot, event, *args):
+    try:
+        g = git.cmd.Git(git_dir)
+        status = g.pull()
+        msg = _('{}').format(status)
+        yield from bot.coro_send_message(event.conv, msg)
+    except BaseException as e:
+        msg = _('{} -- {}').format(str(e), event.text)
+        yield from bot.coro_send_message(CONTROL, msg)
 def getsource():
     url = 'https://github.com/2019okulkarn/sodabot'
     short = shorten(url)
