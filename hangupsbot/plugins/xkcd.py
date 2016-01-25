@@ -19,7 +19,7 @@ def _initialise():
 
 @asyncio.coroutine
 def _thirty_seven(bot, event, command):
-    if 'ass' in str(event.text):
+    if 'ass ' in str(event.text):
         link_image = str(pykcd.XKCDStrip(37).image_link)
         filename = os.path.basename(link_image)
         r = yield from aiohttp.request('get', link_image)
@@ -33,7 +33,7 @@ def _thirty_seven(bot, event, command):
 
 
 def xkcd(bot, event, *args):
-    # Don't handle events caused by the bot himself
+    '''Gets xkcd comic. Random number is chosen if number is not given. Format is /bot xkcd <number>'''
     try:
         numlist =  list(range(1, 1631))
         if len(args) == 1 and args[0].isdigit():

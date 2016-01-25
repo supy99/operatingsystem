@@ -6,6 +6,7 @@ def _initialise():
     plugins.register_user_command(['slogan'])
 
 def slogan(bot, event, *args):
+    '''Creates a slogan for something. Format is /bot slogan <something>''' 
     try:
         slogan = choice(slogans).format(' '.join(args))
         msg = _('{}').format(slogan)

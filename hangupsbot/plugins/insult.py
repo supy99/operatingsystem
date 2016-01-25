@@ -8,6 +8,7 @@ def _initialise():
     plugins.register_user_command(["insult"])
 
 def insult(bot, event, *args):
+    '''Insult something/somebody using a predefined list of insults. Will not insult itself. Format is /bot insult <whattoinsult>'''
     if args:
         insulttouse = choose(insultslist.insults)
         checkforbot = ''.join(args)

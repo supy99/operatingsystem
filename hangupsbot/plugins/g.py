@@ -8,6 +8,7 @@ def _initialise():
     plugins.register_user_command(['lmgtfy'])
 
 def lmgtfy(bot, event, *args):
+    '''Returns an lmgtfy link from http://lmgtfy.com/ Format is /bot lmgtfy <what to google>'''
     try:
         if args:
             query = ' '.join(args)

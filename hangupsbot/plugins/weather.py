@@ -7,6 +7,7 @@ def _initialise():
     plugins.register_user_command(['weather', 'forecast'])
 
 def weather(bot, event, *args): 
+    '''Gets weather from weather.com. Defaults to Chantilly, VA if no location given. Format is /bot weather <city>,<state/country>'''
     try:
         if args:
             place = ' '.join(args)

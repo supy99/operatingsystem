@@ -5,6 +5,7 @@ from control import *
     #plugins.register_user_command(['joke'])
 
 def joke(bot, event, *args):
+    '''Tells a joke from http://tambal.azurewebsites.net/joke/random Format is /bot joke'''
     try:
         request = urlopen('http://tambal.azurewebsites.net/joke/random')
         json = request.read()

@@ -12,6 +12,7 @@ def _initialize():
     plugins.register_user_command(["quote"])
 
 def addquote(bot, event, *args):
+    '''Adds a quote to the bot's memory. Format is /bot addquote <quote> - <person>'''
     try:
         if args:
             quote = ' '.join(args).split(' - ')
@@ -33,6 +34,7 @@ def addquote(bot, event, *args):
         yield from bot.coro_send_message(CONTROL, msg)
 
 def quote(bot, event, *args):
+    '''Retrieves quote from bot's memory. Format is /bot quote <person>'''
     try:
         if args:
             user = ' '.join(args).lower()

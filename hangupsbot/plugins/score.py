@@ -6,6 +6,7 @@ def _initialise():
     plugins.register_user_command(['score'])
 
 def score(bot, event, *args):
+    '''Get's scores from ESPN. Format is /bot score <league abbrev (nfl, nba, mlb, nhl, ncf[college])> - <team city (eg. Denver)> <i>Example: /bot score nfl - denver</i>'''
     try:
         list_ = ' '.join(args).split(' - ')
         sport = list_[0]

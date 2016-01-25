@@ -19,10 +19,12 @@ def getsource():
     return msg
     
 def gh(bot, event, *args):
+    '''Retrieves link to source code of bot. Format is /bot gh'''
     msg = getsource()
     yield from bot.coro_send_message(event.conv, msg)
 
 def source(bot, event, *args):
+    '''Retrieves link to source code of bot. Format is /bot source'''
     msg = getsource()
     yield from bot.coro_send_message(event.conv, msg)
 
@@ -51,7 +53,7 @@ def getissue(num):
             "state": state}
 
 def commit(bot, event, *args):
-    '''Get the latest commit'''
+    '''Get the latest commit on bot repo'''
     try:
         url = 'https://api.github.com/repos/{}/{}/git/refs/heads/master'.format(REPO_OWNER, REPO_NAME)
         get = requests.get(url)
