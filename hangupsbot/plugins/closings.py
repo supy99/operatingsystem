@@ -7,23 +7,19 @@ from bs4 import BeautifulSoup
 def _initialise():
     plugins.register_user_command(['fcps', 'lcps'])
 
-def checklcps():
-    r = get('http://www.nbcwashington.com/weather/school-closings/')
-    html = r.text
-    soup = BeautifulSoup(html, 'html.parser')
-    schools = []
-    for school in soup.find_all('p'):
-        schools.append(school.text)
-
-    for i in range(len(schools)):
-        if 'Loudoun County' in schools[i]:
-            return schools[i]
-        else:
-            return 'Open'
 
 def lcps(bot, event, *args):
     try:
-        check = checklcps()
+        r = get('http://www.nbcwashington.com/weather/school-closings/')
+        html = r.text
+        soup = BeautifulSoup(html, 'html.parser')
+        schools = []
+        for school in soup.find_all('p'):
+            schools.append(school.text)
+
+        for i in range(len(schools)):
+            if 'Loudoun County' in schools[i]:
+                check = schools[i]
         status = check.replace('Loudoun County Schools', '')
         msg = _('LCPS is {}').format(status)
     except BaseException as e:
