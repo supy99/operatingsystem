@@ -41,14 +41,14 @@ def xkcd(bot, event, *args):
             link_image = str(pykcd.XKCDStrip(num).image_link)
             title = str(pykcd.XKCDStrip(num).title)
             alt_text = str(pykcd.XKCDStrip(num).alt_text)
-            link = str(pykcd.XKCDStrip(num).link)
+            link = shorten('http://xkcd.com/' + str(num))
         else:
             chosencomic = choose(numlist)
             num = int(chosencomic)
             link_image = str(pykcd.XKCDStrip(num).image_link)
             title = str(pykcd.XKCDStrip(num).title)
             alt_text = str(pykcd.XKCDStrip(num).alt_text)
-            link = str(pykcd.XKCDStrip(num).link)
+            link = shorten('http://xkcd.com/' + str(num))
 
         logger.info("getting {}".format(link_image))
         filename = os.path.basename(link_image)
