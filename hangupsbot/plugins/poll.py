@@ -1,8 +1,6 @@
 import plugins
 from control import *
 
-logger = logging.getLogger(__name__)
-
 def _initialize():
     plugins.register_admin_command(["poll"])
     plugins.register_user_command(["vote", "results"])
