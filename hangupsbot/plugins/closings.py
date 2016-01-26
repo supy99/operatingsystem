@@ -74,21 +74,19 @@ def _lcps(bot, event, command):
             yield from bot.coro_send_message(CONTROL, check['message'])
 
 def fcps(bot, event, *args):
-        '''This command checks for school closings in the Loudon County Public Schools area. Data taken from NBC.'''
-        if ('fcps', 'fairfax', 'ffx') in event.text.lower():
-        check = checkfcps()
-        if check['simple'] == '':
-            yield from bot.coro_send_message(event.conv, check['message'])
-        else:
-            yield from bot.coro_send_message(event.conv, check['simple'])
-            yield from bot.coro_send_message(CONTROL, check['message'])
+    '''This command checks for school closings in the Loudon County Public Schools area. Data taken from NBC.'''
+    check = checkfcps()
+    if check['simple'] == '':
+        yield from bot.coro_send_message(event.conv, check['message'])
+    else:
+        yield from bot.coro_send_message(event.conv, check['simple'])
+        yield from bot.coro_send_message(CONTROL, check['message'])
 
 def fcps(bot, event, *args):
     '''This command checks for closings in the Fairfax County Public Schools Area. Data taken from TJHSST.'''
-    if ('lcps', 'loudon') in event.text.lower():
-        check = checklcps()
-        if check['simple'] == '':
-            yield from bot.coro_send_message(event.conv, check['message'])
-        else:
-            yield from bot.coro_send_message(event.conv, check['simple'])
-            yield from bot.coro_send_message(CONTROL, check['message'])
+    check = checklcps()
+    if check['simple'] == '':
+        yield from bot.coro_send_message(event.conv, check['message'])
+    else:
+        yield from bot.coro_send_message(event.conv, check['simple'])
+        yield from bot.coro_send_message(CONTROL, check['message'])
