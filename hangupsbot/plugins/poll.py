@@ -8,6 +8,8 @@ def _initialize():
 def poll(bot, event, *args):
     '''Creates a poll. Format is /bot poll <name>'''
     try:
+        if not bot.memory.exists(['polls']):
+                bot.memory.set_by_path(['polls'], {})
         if args:
             name = ' '.join(args)
             bot.memory.set_by_path(['polls', name], {})
