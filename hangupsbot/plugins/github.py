@@ -64,7 +64,7 @@ def getissue(num):
             "state": state}
 def search(term):
     searchurl = 'https://api.github.com/search/issues?q=user:2019okulkarn+repo:sodabot+' + term
-    g = get(url)
+    g = requests.get(url)
     data = json.loads()
     first = data[u'items'][0]
     total = str(data[u'total_count'])
