@@ -22,7 +22,7 @@ def pull(bot, event, *args):
         msg = _('{} -- {}').format(str(e), event.text)
         yield from bot.coro_send_message(CONTROL, msg)
 
-def postissue(event, args):
+def postissue(event, url, args):
     if str(args[0]).isdigit():
         try:
             i = getissue(int(args[0]))
@@ -132,7 +132,7 @@ def issue(bot, event, *args):
     url = 'https://api.github.com/repos/{}/{}/issues'.format(REPO_OWNER, REPO_NAME)
     try:
         if args:
-            msg = postissue(event, args)
+            msg = postissue(event, url, args)
         else:
             i = getopenissue(0, url)
             msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
