@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 import asyncio
 
 def _initialise():
-    plugins.register_user_command(['fcps', 'lcps'])
     plugins.register_handler(_fcps, type="message")
     plugins.register_handler(_lcps, type="message")
 
@@ -74,21 +73,3 @@ def _lcps(bot, event, command):
         else:
             yield from bot.coro_send_message(event.conv, check['simple'])
             yield from bot.coro_send_message(CONTROL, check['message'])
-
-def lcps(bot, event, *args):
-    '''This command checks for school closings in the Loudon County Public Schools area. Data taken from NBC.'''
-    check = checklcps()
-    if check['simple'] == '':
-        yield from bot.coro_send_message(event.conv, check['message'])
-    else:
-        yield from bot.coro_send_message(event.conv, check['simple'])
-        yield from bot.coro_send_message(CONTROL, check['message'])
-
-def fcps(bot, event, *args):
-    '''This command checks for closings in the Fairfax County Public Schools Area. Data taken from TJHSST.'''
-    check = checkfcps()
-    if check['simple'] == '':
-        yield from bot.coro_send_message(event.conv, check['message'])
-    else:
-        yield from bot.coro_send_message(event.conv, check['simple'])
-        yield from bot.coro_send_message(CONTROL, check['message'])
