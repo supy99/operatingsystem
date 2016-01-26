@@ -9,6 +9,7 @@ def _initialise():
 
 
 def lcps(bot, event, *args):
+'''The following command checks for school closings in the Loudon County Public School area.'''    
     try:
         r = get('http://www.nbcwashington.com/weather/school-closings/')
         html = r.text
