@@ -12,15 +12,7 @@ def _initialise():
     plugins.register_admin_command(['pull', 'issue', 'commit'])
     plugins.register_user_command(['gh' , 'source'])
 
-def pull(bot, event, *args):
-    try:
-        g = git.cmd.Git(git_dir)
-        status = g.pull()
-        msg = _('{}').format(status)
-        yield from bot.coro_send_message(event.conv, msg)
-    except BaseException as e:
-        msg = _('{} -- {}').format(str(e), event.text)
-        yield from bot.coro_send_message(CONTROL, msg)
+# helpers
 
 def postissue(event, url, args):
     if str(args[0]).isdigit():
@@ -37,8 +29,15 @@ def postissue(event, url, args):
         session = requests.Session()
         session.auth=(USERNAME, PASSWORD)
         # Create our issue
-        issue = {'title': ' '.join(args),
-                 'body': 'Issue created by {}'.format(event.user.full_name)}
+        text = ' '.join(args).split(' -d ')
+        if len(text) == 2:
+            desc = text[1]
+            title = text[0]
+        else:
+            desc = "No description provided."
+            title = text[0]
+        issue = {'title': title,
+                 'body': 'Issue created by {}. \n {}'.format(event.user.full_name, desc)}
         # Add the issue to our repository
         r = session.post(url, json.dumps(issue))
         get = requests.get(url)
@@ -56,16 +55,6 @@ def getsource():
     title = get_title(url)
     msg = _('** {} ** - {}').format(title, short)
     return msg
-    
-def gh(bot, event, *args):
-    '''Retrieves link to source code of bot. Format is /bot gh'''
-    msg = getsource()
-    yield from bot.coro_send_message(event.conv, msg)
-
-def source(bot, event, *args):
-    '''Retrieves link to source code of bot. Format is /bot source'''
-    msg = getsource()
-    yield from bot.coro_send_message(event.conv, msg)
 
 def getopenissue(num, url):
     get = requests.get(url)
@@ -106,6 +95,28 @@ def search(term):
             "state": state,
             "total": total}
 
+# begin commands
+def gh(bot, event, *args):
+    '''Retrieves link to source code of bot. Format is /bot gh'''
+    msg = getsource()
+    yield from bot.coro_send_message(event.conv, msg)
+
+def source(bot, event, *args):
+    '''Retrieves link to source code of bot. Format is /bot source'''
+    msg = getsource()
+    yield from bot.coro_send_message(event.conv, msg)
+    
+# admin only commands
+def pull(bot, event, *args):
+    try:
+        g = git.cmd.Git(git_dir)
+        status = g.pull()
+        msg = _('{}').format(status)
+        yield from bot.coro_send_message(event.conv, msg)
+    except BaseException as e:
+        msg = _('{} -- {}').format(str(e), event.text)
+        yield from bot.coro_send_message(CONTROL, msg)
+        
 def commit(bot, event, *args):
     '''Get the latest commit on bot repo'''
     try:
