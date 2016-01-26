@@ -6,6 +6,7 @@ import plugins
 from ghinfo import *
 from links import *
 from control import *
+from urllib.parse import quote as sanitize
 
 def _initialise():
     plugins.register_admin_command(['pull', 'issue', 'commit'])
@@ -20,6 +21,7 @@ def pull(bot, event, *args):
     except BaseException as e:
         msg = _('{} -- {}').format(str(e), event.text)
         yield from bot.coro_send_message(CONTROL, msg)
+
 def getsource():
     url = 'https://github.com/2019okulkarn/sodabot'
     short = shorten(url)
@@ -60,6 +62,21 @@ def getissue(num):
             "link": link,
             "number": number,
             "state": state}
+def search(term):
+    searchurl = 'https://api.github.com/search/issues?q=user:2019okulkarn+repo:sodabot+' + term
+    g = get(url)
+    data = json.loads()
+    first = data[u'items'][0]
+    total = str(data[u'total_count'])
+    link = shorten(str(first[u'html_url']))
+    title = first[u'title']
+    number = first[u'number']
+    state = first[u'state']
+    return {"title": title,
+            "link": link,
+            "number": number,
+            "state": state,
+            "total": total}
 
 def commit(bot, event, *args):
     '''Get the latest commit on bot repo'''
@@ -93,6 +110,10 @@ def issue(bot, event, *args):
                     msg = _('{} ({}) State: {}<br>{}').format(i["title"], i["number"], i["state"], i["link"])
                 except:
                     msg = _('Invalid Issue Number')
+            elif str(args[0]) == '--search':
+                query = sanitize(' '.join(args[1:]))
+                s = search(query)
+                msg = _('Total Results: {}<br>First Result: {} ({})<br>State: {}<br>{}').format(s['total'], s['title'], s['number'], s['state'], s['link'])
             else:
                 session = requests.Session()
                 session.auth=(USERNAME, PASSWORD)
