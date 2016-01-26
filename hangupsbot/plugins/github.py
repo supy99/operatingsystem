@@ -22,6 +22,34 @@ def pull(bot, event, *args):
         msg = _('{} -- {}').format(str(e), event.text)
         yield from bot.coro_send_message(CONTROL, msg)
 
+def postissue(args):
+    if str(args[0]).isdigit():
+        try:
+            i = getissue(int(args[0]))
+            msg = _('{} ({}) State: {}<br>{}').format(i["title"], i["number"], i["state"], i["link"])
+        except:
+            msg = _('Invalid Issue Number')
+    elif str(args[0]) == '--search':
+        query = sanitize(' '.join(args[1:]))
+        s = search(query)
+        msg = _('Total Results: {}<br>First Result: {} ({})<br>State: {}<br>{}').format(s['total'], s['title'], s['number'], s['state'], s['link'])
+    else:
+        session = requests.Session()
+        session.auth=(USERNAME, PASSWORD)
+        # Create our issue
+        issue = {'title': ' '.join(args),
+                 'body': 'Issue created by {}'.format(event.user.full_name)}
+        # Add the issue to our repository
+        r = session.post(url, json.dumps(issue))
+        get = requests.get(url)
+        data = json.loads(get.text)
+        link = shorten(str(data[0][u'html_url']))
+        if r.status_code == 201:
+            msg = _('Successfully created issue: {}').format(link)
+        else:
+            msg = _('Could not create issue.<br>Response: {}').format(r.content)
+    return msg
+    
 def getsource():
     url = 'https://github.com/2019okulkarn/sodabot'
     short = shorten(url)
@@ -104,32 +132,7 @@ def issue(bot, event, *args):
     url = 'https://api.github.com/repos/{}/{}/issues'.format(REPO_OWNER, REPO_NAME)
     try:
         if args:
-            if str(args[0]).isdigit():
-                try:
-                    i = getissue(int(args[0]))
-                    msg = _('{} ({}) State: {}<br>{}').format(i["title"], i["number"], i["state"], i["link"])
-                except:
-                    msg = _('Invalid Issue Number')
-            elif str(args[0]) == '--search':
-                query = sanitize(' '.join(args[1:]))
-                s = search(query)
-                msg = _('Total Results: {}<br>First Result: {} ({})<br>State: {}<br>{}').format(s['total'], s['title'], s['number'], s['state'], s['link'])
-            else:
-                session = requests.Session()
-                session.auth=(USERNAME, PASSWORD)
-                # Create our issue
-                issue = {'title': ' '.join(args),
-                         'body': 'Issue created by {}'.format(event.user.full_name)}
-                # Add the issue to our repository
-                r = session.post(url, json.dumps(issue))
-                get = requests.get(url)
-                data = json.loads(get.text)
-                link = shorten(str(data[0][u'html_url']))
-                if r.status_code == 201:
-                    msg = _('Successfully created issue: {}').format(link)
-                else:
-                    msg = _('Could not create issue.<br>Response: {}').format(r.content)
-
+            msg = postissue(args)
         else:
             i = getopenissue(0, url)
             msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
