@@ -133,7 +133,8 @@ def issue(bot, event, *args):
         else:
             i = getopenissue(0, url)
             msg = _('{} ({}) -- {}').format(i["title"], i["number"], i["link"])
-        yield from bot.coro_send_message(CONTROL, msg)
+        if not CONTROL == str(event.conv)
+            yield from bot.coro_send_message(CONTROL, msg)
         yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
         msg = _('{} -- {}').format(str(e), event.text)
