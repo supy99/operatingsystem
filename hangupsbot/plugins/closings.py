@@ -55,7 +55,8 @@ def checkfcps():
                 'simple': simple}
 @asyncio.coroutine
 def _fcps(bot, event, command):
-    if ('fcps', 'fairfax', 'ffx') in event.text.lower():
+    tbc = ['fcps', 'fairfax', 'ffx']
+    if any(term in event.text.lower() for term in tbc):
         check = checkfcps()
         if check['simple'] == '':
             yield from bot.coro_send_message(event.conv, check['message'])
@@ -65,7 +66,8 @@ def _fcps(bot, event, command):
 
 @asyncio.coroutine
 def _lcps(bot, event, command):
-    if ('lcps', 'loudon') in event.text.lower():
+    tbc = ['lcps', 'loudoun']
+    if any(term in event.text.lower() for term in tbc):
         check = checklcps()
         if check['simple'] == '':
             yield from bot.coro_send_message(event.conv, check['message'])
