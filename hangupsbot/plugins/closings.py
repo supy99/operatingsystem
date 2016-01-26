@@ -24,7 +24,7 @@ def checkfcps():
     return status
 
 def fcps(bot, event, *args):
-'''This command checks for closings in the Fairfax County Public Schools Area. Data taken from TJHSST.'''
+    '''This command checks for closings in the Fairfax County Public Schools Area. Data taken from TJHSST.'''
     try:
         page = get('https://ion.tjhsst.edu/api/emerg?format=json')
         data = json.loads(page.text)
