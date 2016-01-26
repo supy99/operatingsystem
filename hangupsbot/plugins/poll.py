@@ -55,7 +55,7 @@ def results(bot, event, *args):
         msg = []
         path = bot.memory.get_by_path(["polls", poll])
         for person in path:
-            spl = path[person].rpartition(':')
+            spl = person.rpartition(':')
             userid = spl[0]
             vote = spl[1]
             users.append(userid)
