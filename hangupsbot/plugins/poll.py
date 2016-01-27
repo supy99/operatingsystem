@@ -47,7 +47,7 @@ def vote(bot, event, *args):
         yield from bot.coro_send_message(CONTROL, msg)
 
 def results(bot, event, *args):
-'''    try:'''
+    '''    try:'''
     poll = ' '.join(args)
     votes = []
     names = []
@@ -66,7 +66,7 @@ def results(bot, event, *args):
         msg.append(result)
     final = ''.join(msg)
     yield from bot.coro_send_message(event.conv, final)
-'''    except BaseException as e:
+    '''    except BaseException as e:
         simple = _('Either an error occurred or there is no poll by that name')
         msg = _('{} -- {}').format(str(e), event.text)
         yield from bot.coro_send_message(event.conv, simple)
