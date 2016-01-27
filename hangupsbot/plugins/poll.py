@@ -1,5 +1,6 @@
 import plugins
 from control import *
+from collections import Counter
 
 def _initialize():
     plugins.register_admin_command(["poll"])
@@ -53,6 +54,7 @@ def results(bot, event, *args):
         votes = []
         names = []
         msg = []
+        winners = []
         path = bot.memory.get_by_path(["polls", poll])
         for person in path:
             names.append(person)
@@ -61,6 +63,12 @@ def results(bot, event, *args):
         for i in range(len(names)):
             result = '{} voted {}<br>'.format(names[i], votes[i])
             msg.append(result)
+        count = Counter(votes)
+        common = count.most_common()
+        for item in common:
+            winners.append(item[0])
+        freq = common[0][0]
+        msg.append('<br>THE WINNER(S) IS/ARE <b>{}</b> with <b>{}</b> votes').format(', '.join(winners), freq)
         final = ''.join(msg)
         yield from bot.coro_send_message(event.conv, final)
     except BaseException as e:
