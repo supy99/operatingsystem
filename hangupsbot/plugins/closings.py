@@ -6,7 +6,7 @@ import asyncio
 
 def _initialise():
     plugins.register_user_command(['fcps'])
-    plugins.register_handler(_fcps, type="message")
+    #plugins.register_handler(_fcps, type="message")
     plugins.register_handler(_lcps, type="message")
 
 
@@ -43,7 +43,7 @@ def fcps(bot, event, *args):
         yield from bot.coro_send_message(event.conv, simple)
         yield from bot.coro_send_message(CONTROL, msg)
 
-@asyncio.coroutine
+'''@asyncio.coroutine
 def _fcps(bot, event, command):
     try:
         tbc = ['fcps', 'fairfax', 'ffx']
@@ -55,7 +55,7 @@ def _fcps(bot, event, command):
         simple = _('An Error Occurred')
         msg = _('{} -- {}').format(str(e), event.text)    
         yield from bot.coro_send_message(event.conv, simple)
-        yield from bot.coro_send_message(CONTROL, message)
+        yield from bot.coro_send_message(CONTROL, message)'''
 
 @asyncio.coroutine
 def _lcps(bot, event, command):
