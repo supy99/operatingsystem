@@ -33,7 +33,7 @@ def polls(bot, event, *args):
     for poll in path:
         polls.append('•' + poll)
     msg = '<br>'.join(polls)
-    yield from bot.coro_send_message(CONTROL, msg)
+    yield from bot.coro_send_message(event.conv, msg)
 
 def vote(bot, event, *args):
     '''Votes in a poll. Format is /bot vote <vote> - <poll>'''
