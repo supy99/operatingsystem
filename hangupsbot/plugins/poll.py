@@ -64,7 +64,10 @@ def results(bot, event, *args):
             result = '{} voted {}<br>'.format(names[i], votes[i])
             msg.append(result)
         count = Counter(votes)
-        common = count.most_common()
+        freqlist = list(count.values())
+        maxcount = max(freqlist)
+        total = freqlist.count(maxcount)
+        common = count.most_common(maxcount)
         for item in common:
             winners.append(str(item[0]))
         freq = str(common[0][1])
