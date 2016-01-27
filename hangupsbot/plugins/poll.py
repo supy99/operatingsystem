@@ -67,7 +67,7 @@ def results(bot, event, *args):
         freqlist = list(count.values())
         maxcount = max(freqlist)
         total = freqlist.count(maxcount)
-        common = count.most_common(maxcount)
+        common = count.most_common(total)
         for item in common:
             winners.append(str(item[0]))
         freq = str(common[0][1])
