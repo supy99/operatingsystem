@@ -66,7 +66,7 @@ def results(bot, event, *args):
             name = bot.user_memory_get(user, 'first_name')
             names.append(name)
         for i in range(len(names)):
-            result = '{} voted {}<br>'.format(name[i], votes[i])
+            result = '{} voted {}<br>'.format(names[i], votes[i])
             msg.append(result)
         final = ''.join(msg)
         yield from bot.coro_send_message(event.conv, final)
