@@ -10,7 +10,7 @@ def getlyrics(title, artist):
 	nice = soup(html, 'html.parser')
 	text = nice.get_text()
 	lyr = text.split(artist.upper() + ' LYRICS')[2]
-	lyrics_ = lyrics.split('Submit Corrections')[]
+	lyrics_ = lyrics.split('Submit Corrections')[0]
 	return lyrics
 
 def _initialise():
