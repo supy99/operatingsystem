@@ -4,14 +4,15 @@ import plugins
 from control import *
 
 def getlyrics(title, artist):
-	url = 'http://www.azlyrics.com/lyrics/' + artist + '/' + title + '.html'
-	r = get(url)
-	html = r.read()
-	nice = soup(html, 'html.parser')
-	text = nice.get_text()
-	lyr = text.split(artist.upper() + ' LYRICS')[2]
-	lyrics = lyr.split('Submit Corrections')[0]
-	return lyrics.strip()
+        joinedartist = ''.join(artist.split())
+        url = 'http://www.azlyrics.com/lyrics/' + joinedartist + '/' + title + '.html'
+        r = get(url)
+        html = r.read()
+        nice = soup(html, 'html.parser')
+        text = nice.get_text()
+        lyr = text.split(artist.upper() + ' LYRICS')[2]
+        lyrics = lyr.split('Submit Corrections')[0]
+        return lyrics.strip()
 
 def _initialise():
 	plugins.register_user_command(['lyrics'])
@@ -22,7 +23,6 @@ def lyrics(bot, event, *args):
 		title = message.split(' by ')[0]
 		title = ''.join(title.split())
 		artist = message.split(' by ')[1]
-		artist = ''.join(artist.split())
 		g = getlyrics(title, artist)
 		msg = _(g)
 		yield from bot.coro_send_message(event.conv, msg)
