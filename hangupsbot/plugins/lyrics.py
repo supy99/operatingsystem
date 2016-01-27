@@ -10,7 +10,7 @@ def getlyrics(title, artist):
 	nice = soup(html, 'html.parser')
 	text = nice.get_text()
 	lyr = text.split(artist.upper() + ' LYRICS')[2]
-	lyrics_ = lyrics.split('Submit Corrections')[0]
+	lyrics = lyr.split('Submit Corrections')[0]
 	return lyrics
 
 def _initialise():
@@ -20,7 +20,9 @@ def lyrics(bot, event, *args):
 	try:
 		message = ' '.join(args)
 		title = message.split(' by ')[0]
+		title = ''.join(title.split())
 		artist = message.split(' by ')[1]
+		artist = ''.join(artist.split())
 		g = getlyrics(title, artist)
 		msg = _(g)
 		yield from bot.coro_send_message(event.conv, msg)
