@@ -26,7 +26,7 @@ def poll(bot, event, *args):
         yield from bot.coro_send_message(CONTROL, msg)
 
 def vote(bot, event, *args):
-    '''Retrieves quote from bot's memory. Format is /bot quote <person>'''
+    '''Votes in a poll. Format is /bot vote <vote> - <poll>'''
     try:
         spl = ' '.join(args).split(' - ')
         if len(spl) == 2:  
@@ -47,34 +47,24 @@ def vote(bot, event, *args):
         yield from bot.coro_send_message(CONTROL, msg)
 
 def results(bot, event, *args):
-    '''    try:'''
-    poll = ' '.join(args)
-    votes = []
-    names = []
-    msg = []
-    path = bot.memory.get_by_path(["polls", poll])
-    for person in path:
-        msg.append(person)
-        '''spl = person.split(':')
-        name = spl[0]
-        vote = spl[1]
-        names.append(name)
-        votes.append(vote)
-    [str(name) for name in names]
-    [str(vote) for vote in votes]
-    for i in range(len(names)):
-        result = '{} voted {}<br>'.format(names[i], votes[i])
-        msg.append(result)'''
-    final = ''.join(msg)
-    yield from bot.coro_send_message(event.conv, final)
-    '''    except BaseException as e:
+    '''Get's results of poll. Format is /bot results <poll>'''
+    try:
+        poll = ' '.join(args)
+        votes = []
+        names = []
+        msg = []
+        path = bot.memory.get_by_path(["polls", poll])
+        for person in path:
+            names.append(person)
+            vote = path[person]
+            votes.append(vote)
+        for i in range(len(names)):
+            result = '{} voted {}<br>'.format(names[i], votes[i])
+            msg.append(result)
+        final = ''.join(msg)
+        yield from bot.coro_send_message(event.conv, final)
+    except BaseException as e:
         simple = _('Either an error occurred or there is no poll by that name')
         msg = _('{} -- {}').format(str(e), event.text)
         yield from bot.coro_send_message(event.conv, simple)
-        yield from bot.coro_send_message(CONTROL, msg)'''
-
-
-
-
-
-
+        yield from bot.coro_send_message(CONTROL, msg)
