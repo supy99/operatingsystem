@@ -9,21 +9,23 @@ def getlyrics(title, artist):
 	html = r.read()
 	nice = soup(html, 'html.parser')
 	text = nice.get_text()
-	newartist = artist.upper()
-	tosplit = newartist + " LYRICS"
-	lyr = text.split(tosplit)
-	lyrics = lyr[2]
-	lyrics_ = lyrics.split('Submit Corrections')
-	final = lyrics_[0]
-	return final
+	lyr = text.split(artist.upper() + ' LYRICS')[2]
+	lyrics_ = lyrics.split('Submit Corrections')[]
+	return lyrics
 
 def _initialise():
-	plugins.register_admin_command(['testlyrics'])
+	plugins.register_user_command(['lyrics'])
 
-def testlyrics(bot, event, *args):
-	message = ' '.join(args)
-	title = message.split(' by ')[0]
-	artist = message.split(' by ')[1]
-	g = getlyrics(title, artist)
-	msg = _(g)
-	yield from bot.coro_send_message(CONTROL, msg)
+def lyrics(bot, event, *args):
+	try:
+		message = ' '.join(args)
+		title = message.split(' by ')[0]
+		artist = message.split(' by ')[1]
+		g = getlyrics(title, artist)
+		msg = _(g)
+		yield from bot.coro_send_message(event.conv, msg)
+	except BaseException as e:
+		simple = _('The correct format is /bot lyrics <title> by <artist>')
+		msg = _('{} -- {}).format(str(e), event.text)
+		yield from bot.coro_send_message(event.conv, simple)
+		yield from bot.coro_send_message(CONTROL, msg)
