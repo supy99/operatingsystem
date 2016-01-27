@@ -11,7 +11,7 @@ def getlyrics(title, artist):
 	text = nice.get_text()
 	lyr = text.split(artist.upper() + ' LYRICS')[2]
 	lyrics = lyr.split('Submit Corrections')[0]
-	return lyrics
+	return lyrics.strip()
 
 def _initialise():
 	plugins.register_user_command(['lyrics'])
