@@ -14,6 +14,7 @@ def lyrics(bot, event, *args):
         r = get('http://api.lyricsnmusic.com/songs', params=payload)
         info = r.json()[0]
         lyrics = BeautifulSoup(get(info['url']).text, 'html.parser')
+        msg = [None, None] 
         msg[0] = _('<b>Title: </b>{}, <b>Artist: </b>{}').format(
             info['title'], info['artist']['name'])
         msg[1] = _(lyrics.pre.string)
