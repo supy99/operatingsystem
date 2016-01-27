@@ -41,7 +41,7 @@ def vote(bot, event, *args):
         else:
             msg = _("The correct format is /bot vote <vote> - <poll>")
         yield from bot.coro_send_message(event.conv, msg)
-    except:
+    except BaseException as e:
         simple = _('An Error Occurred')
         msg = _("{} -- {}").format(str(e), event.text)
         yield from bot.coro_send_message(event.conv, simple)
