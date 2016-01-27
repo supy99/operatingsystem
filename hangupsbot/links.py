@@ -19,5 +19,5 @@ def get_title(url):
         soup = BS(html, 'html.parser')
         return soup.title.string
     except:
-        error = "Unable to open url :("
+        error = "Title not Found"
         return error

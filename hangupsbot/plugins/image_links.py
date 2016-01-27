@@ -70,11 +70,8 @@ def _watch_image_link(bot, event, command):
                 not_image_but_link = False
         if not_image_but_link and not probable_image_link:
             title = get_title(parsedurl)
-            if not title == 'Unable to open url :(':
-                link = shorten(parsedurl)
-                msg = _("** {} ** -- {}").format(title, link)
-            else:
-                msg = _("{}").format(title)
+            link = shorten(parsedurl)
+            msg = _("** {} ** -- {}").format(title, link)
             yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:
         simple = _('An Error Occurred')
