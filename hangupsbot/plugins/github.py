@@ -105,7 +105,7 @@ def source(bot, event, *args):
     try:
         '''Retrieves link to source code of bot. Format is /bot source [command]'''
         if len(args) == 1:
-            url = 'https://github.com/2019okulkarn/sodabot/tree/master/hangupsbot/plugins' + args[0] + '.py'
+            url = 'https://github.com/2019okulkarn/sodabot/tree/master/hangupsbot/plugins/' + args[0] + '.py'
             link = shorten(url)
             title = get_title(url)
             msg = _('** {} ** - {}').format(title, link)
