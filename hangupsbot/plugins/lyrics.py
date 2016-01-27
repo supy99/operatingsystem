@@ -41,7 +41,7 @@ def lyrics(bot, event, *args):
 		title = message.split(' by ')[0]
 		artist = message.split(' by ')[1]
 		g = getlyrics(title, artist)
-		msg = _('<b>{} by {}</b><br>{}<br>Full Lyrics: {}').format(g['name'], g['artist'], g['lyrics'], g['url'])
+		msg = _('<b>{} by {}</b><br>{}<br>Full Lyrics: {}').format(g['name'], g['artist'], g['lyrics'], shorten(g['url']))
 		yield from bot.coro_send_message(event.conv, msg)
 	except BaseException as e:
 		simple = _('The correct format is /bot lyrics <title> by <artist>')
