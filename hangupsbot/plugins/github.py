@@ -102,9 +102,21 @@ def gh(bot, event, *args):
     yield from bot.coro_send_message(event.conv, msg)
 
 def source(bot, event, *args):
-    '''Retrieves link to source code of bot. Format is /bot source'''
-    msg = getsource()
-    yield from bot.coro_send_message(event.conv, msg)
+    try:
+        '''Retrieves link to source code of bot. Format is /bot source [command]'''
+        if len(args) == 1:
+            url = 'https://github.com/2019okulkarn/sodabot/tree/master/hangupsbot/plugins' + args[0] + '.py'
+            link = shorten(url)
+            title = get_title(url)
+            msg = _('** {} ** - {}').format(title, link)
+        else:
+            msg = getsource()
+        yield from bot.coro_send_message(event.conv, msg)
+    except BaseException as e:
+        msg = _('{} -- {}').format(str(e), event.text)
+        simple = _('Oops! An Error Occurred')
+        yield from bot.coro_send_message(event.conv, simple)
+        yield from bot.coro_send_message(CONTROL, msg)
     
 # admin only commands
 def pull(bot, event, *args):
