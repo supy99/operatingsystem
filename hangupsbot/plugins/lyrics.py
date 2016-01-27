@@ -3,6 +3,7 @@ import plugins
 from apikeys import mashape
 from control import *
 from links import shorten
+from urllib.parse import quote as sanitize
 
 def getlyrics(title, artist):
     response = get("https://musixmatchcom-musixmatch.p.mashape.com/wsr/1.1/track.search?f_has_lyrics=1&page=1&page_size=1&q_track=" + sanitize(title) + "&q_artist=" + sanitize(artist),
