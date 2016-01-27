@@ -68,7 +68,10 @@ def results(bot, event, *args):
         for item in common:
             winners.append(str(item[0]))
         freq = str(common[0][1])
-        msg.append('<br>THE WINNER(S) IS/ARE <b>{}</b> with <b>{}</b> votes'.format(', '.join(winners), freq))
+        if len(winners) == 1:
+            msg.append('<br>THE WINNER IS <b>{}</b> with <b>{}</b> votes'.format(winners[0], freq))
+        else:
+            msg.append('<br>THE WINNERS ARE <b>{}</b> with <b>{}</b> votes'.format(', '.join(winners), freq))
         final = ''.join(msg)
         yield from bot.coro_send_message(event.conv, final)
     except BaseException as e:
