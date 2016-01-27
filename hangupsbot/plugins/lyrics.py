@@ -26,6 +26,6 @@ def lyrics(bot, event, *args):
 		yield from bot.coro_send_message(event.conv, msg)
 	except BaseException as e:
 		simple = _('The correct format is /bot lyrics <title> by <artist>')
-		msg = _('{} -- {}).format(str(e), event.text)
+		msg = _('{} -- {}').format(str(e), event.text)
 		yield from bot.coro_send_message(event.conv, simple)
 		yield from bot.coro_send_message(CONTROL, msg)
