@@ -54,7 +54,8 @@ def results(bot, event, *args):
     msg = []
     path = bot.memory.get_by_path(["polls", poll])
     for person in path:
-        spl = person.split(':')
+        msg.append(person)
+        '''spl = person.split(':')
         name = spl[0]
         vote = spl[1]
         names.append(name)
@@ -63,7 +64,7 @@ def results(bot, event, *args):
     [str(vote) for vote in votes]
     for i in range(len(names)):
         result = '{} voted {}<br>'.format(names[i], votes[i])
-        msg.append(result)
+        msg.append(result)'''
     final = ''.join(msg)
     yield from bot.coro_send_message(event.conv, final)
     '''    except BaseException as e:
