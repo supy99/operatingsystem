@@ -12,10 +12,13 @@ def lyrics(bot, event, *args):
     try:
         payload = {'apikey': key, 'q': str(args)}
         r = get('http://api.lyricsnmusic.com/songs', params=payload)
-        url = r.json()[0]['url']
-        lyrics = BeautifulSoup(get(url).text, 'html.parser')
-        msg = _(lyrics.pre.string)
-        yield from bot.coro_send_message(event.conv, msg)
+        info = r.json()[0]
+        lyrics = BeautifulSoup(get(info['url']).text, 'html.parser')
+        msg[0] = _('<b>Title: </b>{}, <b>Artist: </b>{}').format(
+            info['title'], info['artist']['name'])
+        msg[1] = _(lyrics.pre.string)
+        yield from bot.coro_send_message(event.conv, msg[0])
+        yield from bot.coro_send_message(event.conv, msg[1])
     except BaseException as e:
         simple = _("Lyrics not found")
         msg = _('{} -- {}').format(str(e), event.text)
