@@ -4,7 +4,7 @@ from collections import Counter
 
 def _initialize():
     plugins.register_admin_command(["poll"])
-    plugins.register_user_command(["vote", "results"])
+    plugins.register_user_command(["vote","polls", "results"])
 
 def poll(bot, event, *args):
     '''Creates a poll. Format is /bot poll <name>'''
@@ -25,6 +25,15 @@ def poll(bot, event, *args):
         msg = _('{} -- {}').format(str(e), event.text)
         yield from bot.coro_send_message(event.conv, simple)
         yield from bot.coro_send_message(CONTROL, msg)
+
+def polls(bot, event, *args):
+    '''Lists available polls. Format is /bot polls.'''
+    path = bot.memory.get_by_path(['polls'])
+    polls = []
+    for poll in path:
+        polls.append('•' + poll)
+    msg = '<br>'.join(polls)
+    yield from bot.coro_send_message(CONTROL, msg)
 
 def vote(bot, event, *args):
     '''Votes in a poll. Format is /bot vote <vote> - <poll>'''
