@@ -19,7 +19,7 @@ def _initialise():
 
 @asyncio.coroutine
 def _thirty_seven(bot, event, command):
-    if 'ass ' in str(event.text):
+    if '-ass ' in str(event.text):
         link_image = str(pykcd.XKCDStrip(37).image_link)
         filename = os.path.basename(link_image)
         r = yield from aiohttp.request('get', link_image)
