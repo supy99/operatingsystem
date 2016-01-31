@@ -3,6 +3,8 @@ from apikeys import cx, google
 from links import shorten
 from control import *
 import json
+from requests import get
+import traceback
 
 from urllib.parse import quote
 def _initialise():
