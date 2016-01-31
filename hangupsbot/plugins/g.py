@@ -11,16 +11,21 @@ def _initialise():
     plugins.register_user_command(['lmgtfy', 'google', 'g'])
 
 def search(term):
-    r = get('https://www.googleapis.com/customsearch/v1', params={'key': google, 'cx': cx, 'q': term})
-    data = json.loads(r.text)
-    link = shorten(data['items'][0]['link'])
-    return link
+    data = get('https://www.googleapis.com/customsearch/v1', params={'key': google, 'cx': cx, 'q': term}).json()
+    if 'items' not in data:
+        return "Google couldn't find anything"
+    else:
+        link = data['items'][0]['link']
+        return link
 
 def google(bot, event, *args):
     try:
         if args:
             s = search(' '.join(args))
-            msg = _('I searched Google and got {}').format(s)
+            if s == "Google couldn't find anything":
+                msg = _(s)
+            else:
+                msg = _('I searched Google and got {}').format(s)
         else:
             msg = _('What should I ask Google to answer?')
         yield from bot.coro_send_message(event.conv, msg)
