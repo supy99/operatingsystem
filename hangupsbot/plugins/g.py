@@ -16,8 +16,12 @@ def search(term):
     if 'items' not in data:
         return "Google couldn't find anything"
     else:
+        title = data['items'][0]['title']
         link = data['items'][0]['link']
-        return link
+        return {
+            'title': title,
+            'link': link
+        }
 
 def google(bot, event, *args):
     try:

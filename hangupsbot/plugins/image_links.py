@@ -69,8 +69,12 @@ def _watch_image_link(bot, event, command):
             else:
                 not_image_but_link = False
         if not_image_but_link and not probable_image_link:
+            if 'goo.gl' in parsedurl:
+                longurl = lengthen(parsedurl)
+                link = shorten(longurl)
+            else:
+                link = shorten(parsedurl)
             title = get_title(parsedurl)
-            link = shorten(parsedurl)
             msg = _("** {} ** -- {}").format(title, link)
             yield from bot.coro_send_message(event.conv, msg)
     except BaseException as e:

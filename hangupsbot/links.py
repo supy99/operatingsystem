@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup as BS
-
 from urllib.request import urlopen
+from requests import get
+import json
+from urllib.parse import quote
 
 def shorten(url):
     try:
@@ -21,3 +23,9 @@ def get_title(url):
     except:
         error = "Title not Found"
         return error
+
+def lengthen(url):
+    tolengthen = quote(url)
+    r = get('http://api.longurl.org/v2/expand?format=json&url=' + tolengthen)
+    data = json.loads(r.text)
+    return data["long-url"]
