@@ -11,7 +11,7 @@ def _initialise():
     plugins.register_user_command(['lmgtfy', 'google', 'g'])
 
 def search(term):
-    r = get('https://www.googleapis.com/customsearch/v1', params={'key': google, 'cx': cx, 'q': term})
+    r = get('https://www.googleapis.com/customsearch/v1', params={'key': gapi, 'cx': cx, 'q': term})
     data = json.loads(r.text)
     if 'items' not in data:
         return "Google couldn't find anything"
