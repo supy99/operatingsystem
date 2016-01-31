@@ -1,5 +1,5 @@
 import plugins
-from apikeys import cx, google
+from apikeys import cx, gapi
 from links import shorten
 from control import *
 import json
