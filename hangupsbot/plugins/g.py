@@ -30,7 +30,7 @@ def google(bot, event, *args):
             if s == "Google couldn't find anything":
                 msg = _(s)
             else:
-                msg = _('I searched Google and got {}').format(s)
+                msg = _('Google says:<br>**{}**<br>{}').format(s['title'], s['link'])
         else:
             msg = _('What should I ask Google to answer?')
         yield from bot.coro_send_message(event.conv, msg)
@@ -48,7 +48,7 @@ def g(bot, event, *args):
             if s == "Google couldn't find anything":
                 msg = _(s)
             else:
-                msg = _('I searched Google and got {}').format(s)
+                msg = _('Google says:<br>**{}**<br>{}').format(s['title'], s['link'])
         else:
             msg = _('What should I ask Google to answer?')
         yield from bot.coro_send_message(event.conv, msg)
