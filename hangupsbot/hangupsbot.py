@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import appdirs, argparse, asyncio, gettext, logging, logging.config, os, shutil, signal, sys, time
-
+import re
 import hangups
 
 from hangups.schemas import OffTheRecordStatus
@@ -693,10 +693,13 @@ class HangupsBot(object):
         if message is None:
             segments = []
         elif "parser" in context and context["parser"] is False and isinstance(message, str):
+            message = re.sub('fuck', 'fsck', message, flags=re.I)
             segments = [hangups.ChatMessageSegment(message)]
         elif isinstance(message, str):
+            message = re.sub('fuck', 'fsck', message, flags=re.I)
             segments = simple_parse_to_segments(message)
         elif isinstance(message, list):
+            message = [re.sub('fuck', 'fsck', seg, flags=re.I) for seg in message]
             segments = message
         else:
             raise TypeError("unknown message type supplied")
@@ -741,7 +744,6 @@ class HangupsBot(object):
             # send messages using FakeConversation as a workaround
 
             _fc = FakeConversation(self._client, response[0])
-
             try:
                 yield from _fc.send_message( response[1],
                                              image_id=image_id,
