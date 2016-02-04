@@ -80,7 +80,7 @@ def getissue(num):
             "number": number,
             "state": state}
 def search(term):
-    searchurl = 'https://api.github.com/search/issues?q=user:2019okulkarn+repo:sodabot+' + term
+    searchurl = 'https://api.github.com/search/issues?q=user:{}+repo:{}+{}'.format(REPO_OWNER, REPO_NAME, term)
     g = requests.get(searchurl)
     data = json.loads(g.text)
     first = data[u'items'][0]
