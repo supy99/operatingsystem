@@ -2,29 +2,36 @@ import plugins
 import json
 from requests import get
 from control import *
-import asyncio
+from bs4 import BeautifulSoup
 
 def _initialise():
-    plugins.register_user_command(['fcps'])
-    #plugins.register_handler(_fcps, type="message")
-    plugins.register_handler(_lcps, type="message")
+    plugins.register_user_command(['fcps', 'lcps'])
 
 
-def checklcps():    
-    page = get('http://wogloms.com/closings/status.php')
-    data = json.loads(page.text)
-    status = data['Loudoun']
-    return status
-    
+def lcps(bot, event, *args):
+'''This command checks for school closings in the Loudon County Public Schools area. Data taken from NBC.'''    
+    try:
+        r = get('http://www.nbcwashington.com/weather/school-closings/')
+        html = r.text
+        soup = BeautifulSoup(html, 'html.parser')
+        schools = []
+        for school in soup.find_all('p'):
+            schools.append(school.text)
 
-def checkfcps():
-    page = get('http://wogloms.com/closings/status.php')
-    data = json.loads(page.text)
-    status = data['Fairfax']
-    return status
+        for i in range(len(schools)):
+            if 'Loudoun County' in schools[i]:
+                check = str(schools[i])
+        status = check.replace('Loudoun County Schools', '')
+        msg = _('LCPS is {}').format(status)
+        yield from bot.coro_send_message(event.conv, msg)
+    except BaseException as e:
+        simple = _('An Error Occurred')
+        msg = _('{} -- {}').format(str(e), event.text)
+        yield from bot.coro_send_message(event.conv, simple)
+        yield from bot.coro_send_message(CONTROL, msg)
 
 def fcps(bot, event, *args):
-    '''This command checks for closings in the Fairfax County Public Schools Area. Data taken from TJHSST.'''
+'''This command checks for closings in the Fairfax County Public Schools Area. Data taken from TJHSST.'''
     try:
         page = get('https://ion.tjhsst.edu/api/emerg?format=json')
         data = json.loads(page.text)
@@ -42,31 +49,3 @@ def fcps(bot, event, *args):
         msg = _('{} -- {}').format(str(e), event.text)
         yield from bot.coro_send_message(event.conv, simple)
         yield from bot.coro_send_message(CONTROL, msg)
-
-'''@asyncio.coroutine
-def _fcps(bot, event, command):
-    try:
-        tbc = ['fcps', 'fairfax', 'ffx']
-        if any(term in event.text.lower() for term in tbc):
-            check = checkfcps()
-            msg = _('FCPS Is Currently <b>{}<b>').format(check.upper())
-            yield from bot.coro_send_message(event.conv, msg)
-    except BaseException as e:
-        simple = _('An Error Occurred')
-        msg = _('{} -- {}').format(str(e), event.text)    
-        yield from bot.coro_send_message(event.conv, simple)
-        yield from bot.coro_send_message(CONTROL, message)'''
-
-@asyncio.coroutine
-def _lcps(bot, event, command):
-    try:
-        tbc = ['lcps', 'loudoun']
-        if any(term in event.text.lower() for term in tbc):
-            check = checklcps()
-            msg = _('LCPS Is Currently <b>{}<b>').format(check.upper())
-            yield from bot.coro_send_message(event.conv, msg)
-    except BaseException as e:
-        simple = _('An Error Occurred')
-        msg = _('{} -- {}').format(str(e), event.text)    
-        yield from bot.coro_send_message(event.conv, simple)
-        yield from bot.coro_send_message(CONTROL, message)
