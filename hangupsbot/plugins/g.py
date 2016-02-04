@@ -105,8 +105,6 @@ def g(bot, event, *args):
         msg = _('{} -- {}').format(tb, event.text)
         yield from bot.coro_send_message(CONTROL, msg)
         yield from bot.coro_send_message(event.conv, _('An Error Occured'))
-
-
 def lmgtfy(bot, event, *args):
     '''Returns an lmgtfy link from http://lmgtfy.com/ Format is /bot lmgtfy <what to google>'''
     try:
